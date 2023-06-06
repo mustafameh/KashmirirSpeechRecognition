@@ -35,8 +35,8 @@ function startRecording() {
                 // Handle successful stream acquisition
                 handleSuccess(stream);
 
-                // Stop recording after 2 seconds
-                setTimeout(endRecording, 2000);
+                // Stop recording after 3 seconds
+                setTimeout(endRecording, 3000);
             });
         }
     }, 1000);
@@ -64,17 +64,19 @@ function handleSuccess(stream) {
 
 // Function to stop recording and send the audio data to the server
 function endRecording() {
-    // Stop the MediaRecorder
     mediaRecorder.stop();
 
-    // Create a Blob from the recorded audio data
+    // When creating the Blob, use the same MIME type as the MediaRecorder
     const blob = new Blob(recordedBlobs, {type: 'audio/webm'});
+    
+    // Create a URL from the recorded Blob to be used as a source for the audio player
+    const audioURL = URL.createObjectURL(blob);
+    
+    // Set the source of the audio player
+    document.getElementById('audioPlayer').src = audioURL;
 
-    // Create a FormData object to hold the audio data
     const formData = new FormData();
     formData.append('audio_data', blob);
-
-    // Send the audio data to the server
     fetch('/record', {
         method: 'POST',
         body: formData
@@ -87,6 +89,7 @@ function endRecording() {
         document.getElementById('recordButton').style.display = 'inline-block';
         document.getElementById('message').textContent = '';
         document.getElementById('countdown').textContent = '';
-    }, 2000);
+    }, 3000);
 }
+
 
