@@ -6,6 +6,8 @@ let timerInterval;
 
 // Attach an event listener to the record button to start recording when it's clicked
 document.getElementById('recordButton').addEventListener('click', startRecording);
+// Add the convert audio event to the Convert button
+document.getElementById('convertButton').addEventListener('click', convertAudio);
 
 // Function to start recording audio
 function startRecording() {
@@ -119,6 +121,8 @@ function endRecording() {
         body: formData
     });
 
+    // Show the Convert button after recording ends
+    document.getElementById('convertButton').style.display = 'inline-block';
     // Reset the UI
     document.getElementById('recordingIndicator').style.display = 'none';
     document.getElementById('message').textContent = 'Voice Clip recorded';
@@ -128,5 +132,26 @@ function endRecording() {
         document.getElementById('countdown').textContent = '';
     }, 3000);
 }
-
+function convertAudio() {
+    // Reuse the Blob from the previous recording
+    const blob = new Blob(recordedBlobs, {type: 'audio/webm'});
+    const formData = new FormData();
+    formData.append('audio_data', blob);
+    fetch('/convert', {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+            return response.blob();
+        }
+    }).then(blob => {
+        // Update the audio player source with the converted file
+        var url = URL.createObjectURL(blob);
+        document.getElementById('audioPlayer').src = url;
+    }).catch(e => {
+        console.log('There has been a problem with your fetch operation: ' + e.message);
+    });
+}
 
