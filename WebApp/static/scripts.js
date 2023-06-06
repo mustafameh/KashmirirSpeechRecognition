@@ -1,6 +1,8 @@
 // Declare the variables that will hold the MediaRecorder object and the audio data
 let mediaRecorder;
 let recordedBlobs;
+let progressInterval;
+let timerInterval;
 
 // Attach an event listener to the record button to start recording when it's clicked
 document.getElementById('recordButton').addEventListener('click', startRecording);
@@ -35,13 +37,44 @@ function startRecording() {
                 // Handle successful stream acquisition
                 handleSuccess(stream);
 
+                // Start the progress bar and timer display updates
+                startProgress();
+                startTimer();
+
+
                 // Stop recording after 3 seconds
-                setTimeout(endRecording, 3000);
+                setTimeout(endRecording, 3500);
             });
         }
     }, 1000);
 }
 
+function startProgress() {
+    const progressBar = document.getElementById('progress-bar');
+    const increment = 100 / 30; // increment by 5% each 100ms for 2 seconds (100/2000*100)
+    let width = 0;
+    progressInterval = setInterval(() => {
+        if (width >= 100) {
+            clearInterval(progressInterval);
+        } else {
+            width += increment;
+            progressBar.style.width = width + '%';
+        }
+    }, 100);
+}
+
+function startTimer() {
+    const timerDisplay = document.getElementById('timer');
+    let time = 0;
+    timerInterval = setInterval(() => {
+        if (time >= 3) {
+            clearInterval(timerInterval);
+        } else {
+            time += 0.1;
+            timerDisplay.textContent = `${time.toFixed(1)}s / 3.00s`;
+        }
+    }, 100);
+}
 // Function to handle successful stream acquisition
 function handleSuccess(stream) {
     // Initialize the array that will hold the recorded audio data
@@ -65,6 +98,10 @@ function handleSuccess(stream) {
 // Function to stop recording and send the audio data to the server
 function endRecording() {
     mediaRecorder.stop();
+
+    // Stop the progress bar and timer display updates
+    clearInterval(progressInterval);
+    clearInterval(timerInterval);
 
     // When creating the Blob, use the same MIME type as the MediaRecorder
     const blob = new Blob(recordedBlobs, {type: 'audio/webm'});
