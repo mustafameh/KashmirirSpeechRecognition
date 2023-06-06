@@ -1,18 +1,26 @@
+/* Styles for the overall body of the webpage */
 body {
-    background: #0277bd; /* Based on Netil Radio's vibrant blue */
+    /* Set the background color */
+    background: #0277bd;
+
+    /* Center the content */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+
+    /* Set the font */
     font-family: Arial, sans-serif;
     color: white;
 }
 
+/* Styles for the container div */
 #container {
     text-align: center;
 }
 
+/* Styles for the record button */
 #recordButton {
     padding: 20px;
     font-size: 1.5em;
@@ -23,11 +31,13 @@ body {
     cursor: pointer;
 }
 
+/* Styles for the countdown, recording indicator, and message elements */
 #countdown, #recordingIndicator, #message {
     margin-top: 20px;
     font-size: 1.2em;
 }
 
+/* Styles for the recording indicator */
 #recordingIndicator {
     height: 20px;
     width: 20px;
@@ -37,8 +47,10 @@ body {
     display: none;
 }
 
+/* Keyframes for the blinking animation of the recording indicator */
 @keyframes blink {
     0% { opacity: 0; }
     50% { opacity: 1; }
     100% { opacity: 0; }
 }
+

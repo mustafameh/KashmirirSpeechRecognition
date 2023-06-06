@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Website Title -->
     <title>Record Voice</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 
+    <!-- Importing CSS file for styling the website -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div id="container">
+        <!-- Button for triggering the recording -->
         <button id="recordButton">Record</button>
+
+        <!-- Countdown Timer Display before recording -->
         <div id="countdown"></div>
+
+        <!-- Indicator that the recording is in progress -->
         <div id="recordingIndicator"></div>
+
+        <!-- Message Display -->
         <div id="message"></div>
     </div>
+
+    <!-- Importing JS file for controlling the recording -->
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
+
